@@ -295,12 +295,12 @@ let state = {
 };
 
 function saveState() {
-  localStorage.setItem('musicPlayV13', JSON.stringify(state));
+  localStorage.setItem('musicPlayV14', JSON.stringify(state));
   if (state.role === 'docente') renderAnalytics();
 }
 
 function loadState() {
-  const saved = localStorage.getItem('musicPlayV13');
+  const saved = localStorage.getItem('musicPlayV14');
   if (saved) state = { ...state, ...JSON.parse(saved) };
 }
 
@@ -763,7 +763,7 @@ window.onload = loadState;
 // ==========================================
 (function () {
   const manifest = {
-    name: "Music Play! Suite v13.0",
+    name: "Music Play! Suite v14.0",
     short_name: "MusicPlay",
     start_url: "./",
     display: "standalone",
@@ -783,7 +783,7 @@ window.onload = loadState;
   document.head.appendChild(link);
 
   const swCode = `
-    const CACHE_NAME = 'music-play-pwa-v13';
+    const CACHE_NAME = 'music-play-pwa-v14';
     self.addEventListener('install', event => { self.skipWaiting(); });
     self.addEventListener('activate', event => { event.waitUntil(clients.claim()); });
     self.addEventListener('fetch', event => {
