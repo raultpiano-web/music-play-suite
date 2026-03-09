@@ -492,6 +492,7 @@ function doLogin() {
     requestAnimationFrame(() => {
       setTimeout(() => { loginScreen.style.display = 'none'; }, 400);
     });
+      });
 
   document.getElementById('roleBadge').innerText = `${state.role.toUpperCase()} | ${state.user}`;
   document.getElementById('evalName').innerText = state.user;
