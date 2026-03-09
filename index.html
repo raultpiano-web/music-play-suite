@@ -437,7 +437,7 @@ function autoCorrelate(buf, sampleRate) {
 let attemptFrames = 0;
 function evaluatePitch(pitch) {
   const feedback = document.getElementById('aiFeedback');
-  if (Math.abs(pitch - currentTargetFreq) < 18) {
+  if (Math.abs(pitch - currentTargetFreq) < 8) {
     feedback.innerText = "¡AFINACIÓN PERFECTA! ✅";
     feedback.style.color = "var(--success)";
     recordSuccess(currentTargetName);
