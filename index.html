@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="theme-color" content="#0f172a" />
+  <meta name="description" content="Ecosistema Neuroeducativo Musical Offline. Todos los derechos reservados 50/50 para Raúl Teresa Hdez & Gemini." />
+  <title>Music Play! Suite v13.0 — Award Edition</title>
+  <style>
+    :root {
+      --primary: #6366f1; --primary-hover: #4f46e5;
+      --secondary: #334155; --bg: #f8fafc; --card: #ffffff;
+      --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
+      --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
+      --c-do: #ef4444; --c-re: #f97316; --c-mi: #facc15;
+      --c-fa: #22c55e; --c-sol: #3b82f6; --c-la: #8b5cf6; --c-si: #d946ef;
+      --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
+    body { background: var(--bg); color: var(--text); min-height: 100vh; overflow-x: hidden; }
+
+    /* LOGIN & ROLES */
+    #loginScreen { position: fixed; inset: 0; background: linear-gradient(135deg, #0f172a, #1e293b); display: flex; align-items: center; justify-content: center; z-index: 10000; transition: opacity 0.4s ease; }
+    .login-card { background: var(--card); padding: 2.5rem; border-radius: 1.5rem; width: 90%; max-width: 400px; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+    .login-card h2 { color: var(--primary); margin-bottom: 0.5rem; font-size: 1.8rem; }
+    .login-card p { color: var(--muted); margin-bottom: 1.5rem; }
+    .role-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 1.5rem; }
+    .role-btn { padding: 1.5rem 1rem; border: 2px solid var(--border); border-radius: 1rem; background: var(--bg); cursor: pointer; font-weight: bold; transition: 0.2s; }
+    .role-btn:hover { border-color: var(--primary); background: #e0e7ff; }
+    .role-btn span { font-size: 2.5rem; display: block; margin-bottom: 0.5rem; }
+    .input-group { display: none; text-align: left; animation: fadeIn 0.3s ease; }
+    .input-group input { width: 100%; padding: 0.8rem; margin-bottom: 1rem; border: 1px solid var(--border); border-radius: 0.5rem; font-size: 1rem; }
+
+    /* MAIN APP SHELL */
+    .shell { max-width: 1100px; margin: 0 auto; padding: 1rem; }
+    .app { background: var(--card); border-radius: 1.5rem; box-shadow: var(--shadow); padding: 1.5rem; min-height: calc(100vh - 2rem); }
+    header { display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--bg); padding-bottom: 1rem; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem; }
+    .header-titles h1 { color: var(--primary); font-size: 1.8rem; }
+    .role-badge { background: #e0e7ff; color: var(--primary); padding: 0.5rem 1rem; border-radius: 99px; font-weight: bold; font-size: 0.9rem; }
+
+    nav { display: flex; flex-wrap: wrap; gap: 0.5rem; background: var(--bg); padding: 0.5rem; border-radius: 1rem; margin-bottom: 1.5rem; }
+    .nav-btn { flex: 1; min-width: 120px; padding: 0.8rem; border: none; background: transparent; color: var(--muted); font-weight: bold; border-radius: 0.5rem; cursor: pointer; transition: all 0.2s; }
+    .nav-btn.active { background: var(--primary); color: white; box-shadow: 0 4px 6px rgba(99,102,241,0.3); }
+    .nav-btn:hover:not(.active) { background: #e2e8f0; color: var(--text); }
+
+    .panel { display: none; animation: slideUp 0.3s ease; }
+    .panel.active { display: block; }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    .btn { padding: 0.8rem 1.5rem; border: none; border-radius: 0.5rem; font-weight: bold; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 0.5rem; font-size: 1rem; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); }
+    .btn-secondary { background: var(--border); color: var(--text); }
+    .btn-secondary:hover { background: #cbd5e1; }
+
+    /* GLASSMORPHISM IA BUTTON */
+    .btn-ai { background: linear-gradient(45deg, #8b5cf6, #d946ef); color: white; position: relative; overflow: hidden; z-index: 1; border: 2px solid transparent; }
+    .btn-ai::before { content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); transition: 0.5s; z-index: -1; }
+    .btn-ai:hover::before { left: 100%; }
+    .btn-ai.recording { animation: pulseGlow 1.5s infinite; background: #ef4444; }
+    @keyframes pulseGlow { 0% { box-shadow: 0 0 0 0 rgba(239,68,68,0.6); } 70% { box-shadow: 0 0 0 15px rgba(239,68,68,0); } 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0); } }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+    @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+
+    /* G1: BINGO */
+    .bingo-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem; max-width: 350px; margin: 0 auto 1.5rem; }
+    .bingo-cell { aspect-ratio: 1; background: var(--bg); border: 2px solid var(--border); border-radius: 1rem; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; font-weight: bold; cursor: pointer; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); color: var(--text); }
+    .bingo-cell.marked { background: var(--success); color: white; border-color: var(--success); transform: scale(0.95); box-shadow: inset 0 4px 6px rgba(0,0,0,0.2); }
+
+    /* G2: ESTRELLAS */
+    .stars-container { background: linear-gradient(180deg, #020617, #0f172a); padding: 2.5rem; border-radius: 1.5rem; position: relative; overflow: hidden; min-height: 350px; display: flex; flex-direction: column; gap: 12px; align-items: center; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+    .star-step { width: 85%; max-width: 400px; height: 55px; border-radius: 30px; border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05); color: white; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: all 0.3s; text-align: center; backdrop-filter: blur(5px); }
+    .star-step:hover { background: rgba(255,255,255,0.15); border-color: rgba(255,255,255,0.3); }
+    .star-step.lit { background: var(--c-color); box-shadow: 0 0 30px var(--c-color); border-color: white; color: #000; transform: scale(1.05); }
+
+    /* G6: ANALÍTICAS */
+    .analytics-card { background: var(--bg); padding: 1.5rem; border-radius: 1rem; border-left: 5px solid var(--primary); margin-bottom: 1rem; }
+    .bar-wrap { background: var(--border); height: 16px; border-radius: 8px; overflow: hidden; margin-top: 8px; }
+    .bar-fill { height: 100%; background: var(--primary); transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+
+    /* ROLES */
+    body.role-alumno .docente-only { display: none !important; }
+
+    /* G7: RÚBRICA Y PDF */
+    table { width: 100%; border-collapse: collapse; margin-top: 1.5rem; background: var(--bg); border-radius: 1rem; overflow: hidden; }
+    th, td { padding: 1rem; border-bottom: 1px solid var(--border); text-align: left; }
+    th { background: #e2e8f0; color: var(--secondary); font-weight: bold; }
+
+    @media print {
+      @page { size: A4 portrait; margin: 15mm; }
+      body { background: white; }
+      .shell, .app { padding: 0; box-shadow: none; max-width: 100%; border-radius: 0; }
+      nav, header, .btn, .docente-only, #toast { display: none !important; }
+      #g7 { display: block !important; }
+      table { border: 1px solid #000; }
+      th, td { border: 1px solid #ccc; padding: 8px; }
+    }
+
+    /* TOAST */
+    #toast { position: fixed; bottom: 20px; right: 20px; background: #1e293b; color: white; padding: 1rem 2rem; border-radius: 0.5rem; transform: translateY(100px); opacity: 0; transition: all 0.3s cubic-bezier(0.4,0,0.2,1); z-index: 9999; font-weight: bold; box-shadow: 0 10px 15px rgba(0,0,0,0.2); }
+    #toast.show { transform: translateY(0); opacity: 1; }
+  </style>
+</head>
+<body>
+
+<div id="loginScreen" aria-modal="true" role="dialog">
+  <div class="login-card">
+    <h2>🎵 Music Play! v13.0</h2>
+    <p>Ecosistema Neuroeducativo Musical<br><small>© Todos los derechos reservados 50/50 (Raúl Teresa Hdez &amp; Gemini)</small></p>
+    <div class="role-grid" id="roleSelector">
+      <button class="role-btn" onclick="selectRole('docente')"><span>👩‍🏫</span>Docente</button>
+      <button class="role-btn" onclick="selectRole('alumno')"><span>🎓</span>Alumno</button>
+    </div>
+    <div class="input-group" id="loginForm">
+      <input type="text" id="userName" placeholder="Nombre completo o Identificador" autocomplete="off">
+      <button class="btn btn-primary" style="width:100%" onclick="doLogin()">Acceder al Ecosistema</button>
+    </div>
+  </div>
+</div>
+
+<div class="shell">
+  <main class="app">
+    <header>
+      <div class="header-titles">
+        <h1>Music Play! Suite</h1>
+        <p style="color:var(--muted); font-size:0.95rem; margin-top:4px;">IA Vocal · Repetición Espaciada · Gamificación Octalysis</p>
+      </div>
+      <div>
+        <span id="roleBadge" class="role-badge">Sesión: ---</span>
+      </div>
+    </header>
+
+    <nav aria-label="Menú principal">
+      <button class="nav-btn active" data-target="g1">🎰 Bingo IA</button>
+      <button class="nav-btn" data-target="g2">✨ Estrellas</button>
+      <button class="nav-btn" data-target="g3">🎯 Esquinas</button>
+      <button class="nav-btn" data-target="g4">🚦 Semáforo</button>
+      <button class="nav-btn" data-target="g5">🎼 Compositor</button>
+      <button class="nav-btn docente-only" data-target="g6">🧠 Analíticas</button>
+      <button class="nav-btn docente-only" data-target="g7">📋 Evaluación</button>
+    </nav>
+
+    <!-- G1: BINGO -->
+    <section id="g1" class="panel active">
+      <h2>🎰 Bingo de Solfeo (Motor de Autocorrección IA)</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Canta frente al micrófono. La Inteligencia Artificial validará la frecuencia de tu voz mediante algoritmos matemáticos.</p>
+      <div class="grid-2">
+        <div style="text-align:center; background:var(--bg); padding:2rem; border-radius:1rem; border:1px solid var(--border);">
+          <p style="font-size:1.1rem; color:var(--muted);">Nota objetivo generada por el algoritmo:</p>
+          <div id="aiTargetDisplay" style="font-size:3.5rem; font-weight:900; margin:1rem 0; color:var(--primary);">--</div>
+          <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+            <button class="btn btn-secondary" onclick="generateTargetNote()">🎲 Pedir Nota</button>
+            <button class="btn btn-ai" id="btnMic" onclick="toggleAI()"><span id="micIcon">🎙️</span> Evaluar con IA</button>
+          </div>
+          <p id="aiFeedback" style="margin-top:1.5rem; font-weight:bold; height:24px; font-size:1.2rem;"></p>
+        </div>
+        <div style="display:flex; flex-direction:column; justify-content:center;">
+          <div class="bingo-grid" id="bingoBoard"></div>
+          <button class="btn btn-secondary" style="margin:0 auto; display:block;" onclick="initBingo()">🔄 Generar Nuevo Cartón</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- G2: ESTRELLAS -->
+    <section id="g2" class="panel">
+      <h2>✨ El Afinador de Estrellas</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Misión: Las constelaciones han perdido su resonancia. Escucha el mensaje estelar y devuélveles la luz.</p>
+      <div style="margin-bottom:2rem; text-align:center;">
+        <button class="btn btn-primary" onclick="startStars()">🚀 Escuchar Mensaje Estelar</button>
+        <p id="starStatus" style="text-align:center; font-weight:bold; margin-top:1rem; font-size:1.2rem; color:var(--primary);">Esperando conexión...</p>
+      </div>
+      <div class="stars-container" id="starBoard">
+        <button class="star-step" style="--c-color: var(--c-la)" onclick="checkStar('La')">LA (Cielo)</button>
+        <button class="star-step" style="--c-color: var(--c-sol)" onclick="checkStar('Sol')">SOL (Hombros)</button>
+        <button class="star-step" style="--c-color: var(--c-mi)" onclick="checkStar('Mi')">MI (Pecho)</button>
+        <button class="star-step" style="--c-color: var(--c-re)" onclick="checkStar('Re')">RE (Rodillas)</button>
+        <button class="star-step" style="--c-color: var(--c-do)" onclick="checkStar('Do')">DO (Suelo)</button>
+      </div>
+    </section>
+
+    <!-- G3: ESQUINAS -->
+    <section id="g3" class="panel">
+      <h2>🎯 Cuatro Esquinas (Práctica Intercalada)</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">El algoritmo alterará los timbres para forzar a tu cerebro a reconocer frecuencias puras independientemente del instrumento.</p>
+      <div style="text-align:center; margin:2rem 0; background:var(--bg); padding:2rem; border-radius:1.5rem;">
+        <button class="btn btn-primary" id="btnCorners" onclick="startCorners()">🎧 Analizar Secuencia Neural</button>
+        <p id="cornerDisplay" style="font-size:1.8rem; font-weight:bold; margin-top:1.5rem; color:var(--primary);">...</p>
+      </div>
+      <div style="display:flex; justify-content:center; gap:1.5rem; flex-wrap:wrap;" id="cornerGrid"></div>
+    </section>
+
+    <!-- G4: SEMÁFORO -->
+    <section id="g4" class="panel">
+      <h2>🚦 Regulación Emocional y Somática</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Desarrollo del Aprendizaje Socioemocional (SEL). Sigue el patrón visual para regular el aparato fonador.</p>
+      <div style="text-align:center; margin:2rem 0;">
+        <button class="btn btn-primary" id="btnTraffic" onclick="startTraffic()">▶ Iniciar Ciclo de Regulación</button>
+      </div>
+      <div style="display:flex; flex-direction:column; align-items:center; gap:1.5rem; background:#1e293b; padding:3rem 2rem; border-radius:3rem; width:100%; max-width:250px; margin:0 auto; box-shadow:inset 0 10px 30px rgba(0,0,0,0.5);">
+        <div id="tl-rojo" style="width:70px; height:70px; border-radius:50%; background:#334155; transition:all 0.4s ease; border:4px solid #0f172a;"></div>
+        <div id="tl-amarillo" style="width:70px; height:70px; border-radius:50%; background:#334155; transition:all 0.4s ease; border:4px solid #0f172a;"></div>
+        <div id="tl-verde" style="width:70px; height:70px; border-radius:50%; background:#334155; transition:all 0.4s ease; border:4px solid #0f172a;"></div>
+      </div>
+      <p id="tl-text" style="text-align:center; font-weight:900; font-size:1.8rem; margin-top:2rem; color:var(--primary);">Reposo</p>
+    </section>
+
+    <!-- G5: COMPOSITOR -->
+    <section id="g5" class="panel">
+      <h2>🎼 Síntesis Creativa</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Diseña tu propio ostinato musical utilizando la escala pentatónica.</p>
+      <div style="display:flex; justify-content:center; gap:1rem; margin:2rem 0; flex-wrap:wrap;" id="compKeys"></div>
+      <div id="compScore" style="min-height:100px; border:2px dashed var(--muted); border-radius:1rem; padding:1.5rem; display:flex; gap:0.8rem; flex-wrap:wrap; justify-content:flex-start; align-items:center; background:var(--bg);">
+        <span style="color:var(--muted); width:100%; text-align:center;">El pentagrama está vacío...</span>
+      </div>
+      <div style="text-align:center; margin-top:2rem; display:flex; gap:1rem; justify-content:center;">
+        <button class="btn btn-primary" onclick="compPlay()">▶ Reproducir Secuencia</button>
+        <button class="btn btn-secondary" onclick="compClear()">🗑 Limpiar</button>
+      </div>
+    </section>
+
+    <!-- G6: ANALÍTICAS (DOCENTE) -->
+    <section id="g6" class="panel docente-only">
+      <h2>🧠 Analíticas Predictivas (Spaced Repetition)</h2>
+      <p style="color:var(--muted); margin-bottom:1.5rem;">Mapa de Fricción Cognitiva en tiempo real. El algoritmo aumenta la aparición de las notas con mayor tasa de error.</p>
+      <div id="analyticsBoard" style="margin-top:2rem; display:grid; gap:1rem;"></div>
+      <div style="margin-top:2rem; padding-top:2rem; border-top:1px solid var(--border);">
+        <button class="btn btn-secondary" onclick="resetAnalytics()">♻ Reiniciar Pesos Algorítmicos</button>
+      </div>
+    </section>
+
+    <!-- G7: EVALUACIÓN (DOCENTE) -->
+    <section id="g7" class="panel docente-only">
+      <h2>📋 Ficha de Evaluación LOMLOE / A4</h2>
+      <p style="color:var(--muted)">Generación de evidencias para el expediente académico.</p>
+      <div style="margin:2rem 0; padding:1.5rem; background:var(--bg); border-radius:1rem; border:1px solid var(--border);">
+        <p style="font-size:1.2rem;"><strong>Estudiante evaluado:</strong> <span id="evalName" style="color:var(--primary); font-weight:900;"></span></p>
+      </div>
+      <table>
+        <thead>
+          <tr>
+            <th style="width:70%">Competencia Específica Curricular</th>
+            <th>Calificación de Progreso</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>CE1. Discriminación auditiva activa</strong><br><span style="font-size:0.85rem; color:var(--muted);">Reconoce el tono mediante el motor IA y la práctica intercalada.</span></td>
+            <td><select style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid var(--border);"><option>En proceso</option><option selected>Adecuado</option><option>Excelente</option></select></td>
+          </tr>
+          <tr>
+            <td><strong>CE2. Expresión corporal y técnica vocal</strong><br><span style="font-size:0.85rem; color:var(--muted);">Asocia correctamente los gestos Curwen y regula la emisión.</span></td>
+            <td><select style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid var(--border);"><option>En proceso</option><option selected>Adecuado</option><option>Excelente</option></select></td>
+          </tr>
+          <tr>
+            <td><strong>CE3. Creación mediante herramientas digitales</strong><br><span style="font-size:0.85rem; color:var(--muted);">Crea secuencias con sentido musical en el módulo de síntesis.</span></td>
+            <td><select style="width:100%; padding:0.5rem; border-radius:0.5rem; border:1px solid var(--border);"><option>En proceso</option><option selected>Adecuado</option><option>Excelente</option></select></td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="margin-top:2rem;">
+        <label style="font-weight:bold; display:block; margin-bottom:0.5rem;">Observaciones del Docente:</label>
+        <textarea id="teacherNotes" placeholder="Anota fortalezas o adaptaciones DUA requeridas..." style="width:100%; min-height:120px; padding:1rem; border-radius:0.8rem; border:1px solid var(--border); font-size:1rem; resize:vertical;"></textarea>
+      </div>
+      <div style="margin-top:2rem; display:flex; gap:1rem;">
+        <button class="btn btn-primary" onclick="window.print()">📄 Imprimir Ficha A4</button>
+        <button class="btn btn-secondary" onclick="exportData()">💾 Exportar JSON</button>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div id="toast"></div>
+
+<script>
+// ==========================================
+// 1. CORE DATA — MATRIZ DE NOTAS COMPLETA (BUG #1 CORREGIDO)
+// ==========================================
+const NOTES = [
+  { n: 'Do', f: 261.63, c: 'var(--c-do)' },
+  { n: 'Re', f: 293.66, c: 'var(--c-re)' },
+  { n: 'Mi', f: 329.63, c: 'var(--c-mi)' },
+  { n: 'Fa', f: 349.23, c: 'var(--c-fa)' },
+  { n: 'Sol', f: 392.00, c: 'var(--c-sol)' },
+  { n: 'La', f: 440.00, c: 'var(--c-la)' },
+  { n: 'Si', f: 493.88, c: 'var(--c-si)' }
+];
+
+let state = {
+  user: 'Estudiante',
+  role: 'alumno',
+  cognitiveFriction: { 'Do': 1, 'Re': 1, 'Mi': 1, 'Fa': 1, 'Sol': 1, 'La': 1, 'Si': 1 }
+};
+
+function saveState() {
+  localStorage.setItem('musicPlayV13', JSON.stringify(state));
+  if (state.role === 'docente') renderAnalytics();
+}
+
+function loadState() {
+  const saved = localStorage.getItem('musicPlayV13');
+  if (saved) state = { ...state, ...JSON.parse(saved) };
+}
+
+function getAlgorithmicNote() {
+  let pool = [];
+  NOTES.forEach(note => {
+    let weight = state.cognitiveFriction[note.n];
+    for (let i = 0; i < weight; i++) pool.push(note);
+  });
+  return pool[Math.floor(Math.random() * pool.length)];
+}
+
+function recordSuccess(noteName) {
+  if (state.cognitiveFriction[noteName] > 1) {
+    state.cognitiveFriction[noteName]--;
+    saveState();
+  }
+}
+
+function recordError(noteName) {
+  state.cognitiveFriction[noteName] += 3;
+  if (state.cognitiveFriction[noteName] > 15) state.cognitiveFriction[noteName] = 15;
+  saveState();
+}
+
+// ==========================================
+// 2. MOTOR DE SÍNTESIS DE AUDIO
+// ==========================================
+let audioCtx = null;
+
+function playSynth(freq, type = 'sine', dur = 0.5) {
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
+
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+
+  osc.type = type;
+  osc.frequency.value = freq;
+
+  osc.connect(gain);
+  gain.connect(audioCtx.destination);
+
+  osc.start();
+  gain.gain.setValueAtTime(0, audioCtx.currentTime);
+  gain.gain.linearRampToValueAtTime(0.3, audioCtx.currentTime + 0.05);
+  gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + dur);
+  osc.stop(audioCtx.currentTime + dur);
+}
+
+// ==========================================
+// 3. IA EDGE: DETECCIÓN DE TONO
+// ==========================================
+let micStream = null;
+let aiTimer = null;
+let currentTargetFreq = 0;
+let currentTargetName = "";
+let isRecording = false;
+
+async function toggleAI() {
+  const btn = document.getElementById('btnMic');
+  const feedback = document.getElementById('aiFeedback');
+
+  if (isRecording) { stopAI(); return; }
+  if (!currentTargetName) {
+    feedback.innerText = "¡Pide una nota primero!";
+    feedback.style.color = "var(--warning)";
+    return;
+  }
+
+  try {
+    if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    micStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const source = audioCtx.createMediaStreamSource(micStream);
+    const analyser = audioCtx.createAnalyser();
+    analyser.fftSize = 2048;
+    source.connect(analyser);
+
+    isRecording = true;
+    btn.innerHTML = '🛑 Detener IA';
+    btn.classList.add('recording');
+    feedback.innerText = "IA Escuchando... Canta la nota: " + currentTargetName;
+    feedback.style.color = "var(--primary)";
+
+    const buffer = new Float32Array(analyser.fftSize);
+
+    aiTimer = setInterval(() => {
+      analyser.getFloatTimeDomainData(buffer);
+      let pitch = autoCorrelate(buffer, audioCtx.sampleRate);
+      if (pitch !== -1) evaluatePitch(pitch);
+    }, 250);
+
+  } catch (err) {
+    alert("Permite el acceso al micrófono para usar la IA Vocal.");
+  }
+}
+
+function stopAI() {
+  isRecording = false;
+  const btn = document.getElementById('btnMic');
+  btn.innerHTML = '🎙️ Evaluar con IA';
+  btn.classList.remove('recording');
+  if (micStream) micStream.getTracks().forEach(track => track.stop());
+  clearInterval(aiTimer);
+}
+
+// BUG #2 CORREGIDO: buf[SIZE-i] en lugar de buf[] sin índice
+function autoCorrelate(buf, sampleRate) {
+  let SIZE = buf.length;
+  let rms = 0;
+  for (let i = 0; i < SIZE; i++) { rms += buf[i] * buf[i]; }
+  rms = Math.sqrt(rms / SIZE);
+  if (rms < 0.015) return -1;
+
+  let r1 = 0, r2 = SIZE - 1, thres = 0.2;
+  for (let i = 0; i < SIZE / 2; i++) if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+  for (let i = 1; i < SIZE / 2; i++) if (Math.abs(buf[SIZE - i]) < thres) { r2 = SIZE - i; break; }
+
+  buf = buf.slice(r1, r2);
+  SIZE = buf.length;
+  let c = new Array(SIZE).fill(0);
+  for (let i = 0; i < SIZE; i++) {
+    for (let j = 0; j < SIZE - i; j++) { c[i] = c[i] + buf[j] * buf[j + i]; }
+  }
+
+  let d = 0; while (c[d] > c[d + 1]) d++;
+  let maxval = -1, maxpos = -1;
+  for (let i = d; i < SIZE; i++) {
+    if (c[i] > maxval) { maxval = c[i]; maxpos = i; }
+  }
+  return maxpos > 0 ? sampleRate / maxpos : -1;
+}
+
+let attemptFrames = 0;
+function evaluatePitch(pitch) {
+  const feedback = document.getElementById('aiFeedback');
+  if (Math.abs(pitch - currentTargetFreq) < 18) {
+    feedback.innerText = "¡AFINACIÓN PERFECTA! ✅";
+    feedback.style.color = "var(--success)";
+    recordSuccess(currentTargetName);
+    markBingoCell(currentTargetName);
+    stopAI();
+    attemptFrames = 0;
+  } else {
+    attemptFrames++;
+    feedback.innerText = "Buscando afinación... 🔄";
+    feedback.style.color = "var(--warning)";
+    if (attemptFrames > 12) { recordError(currentTargetName); attemptFrames = 0; }
+  }
+}
+
+// ==========================================
+// 4. INTERFAZ, TOASTS Y ROLES
+// ==========================================
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.innerText = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function selectRole(role) {
+  document.getElementById('roleSelector').style.display = 'none';
+  document.getElementById('loginForm').style.display = 'block';
+  state.role = role;
+}
+
+function doLogin() {
+  const input = document.getElementById('userName').value.trim();
+  if (!input) { alert("Escribe tu nombre para iniciar."); return; }
+
+  state.user = input;
+  saveState();
+
+  document.getElementById('loginScreen').style.opacity = '0';
+  setTimeout(() => { document.getElementById('loginScreen').style.display = 'none'; }, 400);
+
+  document.getElementById('roleBadge').innerText = `${state.role.toUpperCase()} | ${state.user}`;
+  document.getElementById('evalName').innerText = state.user;
+  if (state.role === 'alumno') document.body.classList.add('role-alumno');
+
+  initBingo(); initComposer();
+  if (state.role === 'docente') renderAnalytics();
+  showToast(`¡Bienvenido, ${state.user}!`);
+}
+
+document.querySelectorAll('.nav-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(btn.dataset.target).classList.add('active');
+    btn.classList.add('active');
+  });
+});
+
+// ==========================================
+// 5. MÓDULOS DE JUEGO
+// ==========================================
+
+// --- G1: BINGO ---
+function initBingo() {
+  const b = document.getElementById('bingoBoard');
+  b.innerHTML = '';
+  document.getElementById('aiTargetDisplay').innerText = '--';
+  currentTargetName = '';
+
+  let pool = [];
+  while (pool.length < 8) {
+    let n = getAlgorithmicNote();
+    if (!pool.find(x => x.n === n.n)) pool.push(n);
+  }
+  pool.splice(4, 0, { n: '⭐', f: 0, c: '#e2e8f0' });
+
+  pool.forEach((n, i) => {
+    let div = document.createElement('div');
+    div.className = 'bingo-cell'; div.innerText = n.n; div.dataset.note = n.n;
+    if (i === 4) { div.classList.add('marked'); div.style.borderColor = '#cbd5e1'; div.style.color = '#000'; }
+    div.onclick = () => { if (i !== 4) { div.classList.toggle('marked'); playSynth(n.f); } };
+    b.appendChild(div);
+  });
+}
+
+function generateTargetNote() {
+  let note = getAlgorithmicNote();
+  currentTargetFreq = note.f; currentTargetName = note.n;
+  document.getElementById('aiTargetDisplay').innerText = note.n;
+  document.getElementById('aiFeedback').innerText = "";
+  playSynth(note.f);
+}
+
+function markBingoCell(noteName) {
+  document.querySelectorAll('.bingo-cell').forEach(c => {
+    if (c.dataset.note === noteName && !c.classList.contains('marked')) c.classList.add('marked');
+  });
+}
+
+// --- G2: ESTRELLAS ---
+let starSeq = [];
+let userStarIdx = 0;
+
+function startStars() {
+  starSeq = []; userStarIdx = 0;
+  for (let i = 0; i < 4; i++) starSeq.push(getAlgorithmicNote());
+
+  const status = document.getElementById('starStatus');
+  status.innerText = "Observa y escucha la constelación...";
+  status.style.color = "var(--text)";
+
+  let t = 0;
+  starSeq.forEach(n => {
+    setTimeout(() => playSynth(n.f, 'triangle', 0.6), t * 1000); t += 1.2;
+  });
+  setTimeout(() => { status.innerText = "¡Tu turno! Devuelve la luz."; }, t * 1000);
+}
+
+function checkStar(noteName) {
+  let noteObj = NOTES.find(n => n.n === noteName);
+  playSynth(noteObj.f, 'triangle');
+
+  document.querySelectorAll('.star-step').forEach(b => {
+    if (b.innerText.toUpperCase().includes(noteName.toUpperCase())) {
+      b.classList.add('lit'); setTimeout(() => b.classList.remove('lit'), 400);
+    }
+  });
+
+  if (starSeq.length === 0) return;
+  const status = document.getElementById('starStatus');
+
+  if (noteName === starSeq[userStarIdx].n) {
+    userStarIdx++;
+    recordSuccess(noteName);
+    status.innerText = `Luz conectada (${userStarIdx}/${starSeq.length})`;
+    if (userStarIdx === starSeq.length) {
+      status.innerText = "🌌 ¡Constelación restaurada!";
+      status.style.color = "var(--success)";
+      starSeq = []; showToast("+100 XP por memoria espacial");
+    }
+  } else {
+    status.innerText = "💥 Energía inestable. Vuelve a empezar.";
+    status.style.color = "var(--danger)";
+    recordError(starSeq[userStarIdx].n);
+    userStarIdx = 0;
+  }
+}
+
+// --- G3: ESQUINAS ---
+let cornerTarget = null;
+
+function startCorners() {
+  const timbres = ['sine', 'square', 'triangle'];
+  const board = document.getElementById('cornerGrid'); board.innerHTML = '';
+
+  let selected = [];
+  while (selected.length < 4) {
+    let n = getAlgorithmicNote();
+    if (!selected.find(x => x.n === n.n)) selected.push(n);
+  }
+
+  selected.forEach(n => {
+    let b = document.createElement('button');
+    b.className = 'btn'; b.style.background = n.c; b.style.color = 'white';
+    b.style.width = '120px'; b.style.height = '120px'; b.style.fontSize = '1.5rem'; b.style.borderRadius = '1rem';
+    b.innerText = n.n;
+    b.onclick = () => {
+      playSynth(n.f);
+      const disp = document.getElementById('cornerDisplay');
+      if (n.n === cornerTarget.n) {
+        disp.innerText = "¡Conexión Neuronal Exitosa! 🎉"; disp.style.color = "var(--success)"; recordSuccess(n.n);
+      } else {
+        disp.innerText = "¡Bloqueo! El sonido real era " + cornerTarget.n; disp.style.color = "var(--danger)"; recordError(cornerTarget.n);
+      }
+      cornerTarget = null;
+    };
+    board.appendChild(b);
+  });
+
+  cornerTarget = selected[Math.floor(Math.random() * 4)];
+  document.getElementById('cornerDisplay').innerText = "Identifica el último sonido...";
+  document.getElementById('cornerDisplay').style.color = "var(--text)";
+
+  let t = 0;
+  for (let i = 0; i < 4; i++) {
+    let t_type = timbres[Math.floor(Math.random() * timbres.length)];
+    let note = (i === 3) ? cornerTarget : selected[Math.floor(Math.random() * 4)];
+    setTimeout(() => playSynth(note.f, t_type, 0.6), t * 1000); t += 0.9;
+  }
+}
+
+// --- G4: SEMÁFORO ---
+let trTimer = null; let trState = false;
+
+function startTraffic() {
+  const btn = document.getElementById('btnTraffic');
+  if (trState) {
+    clearInterval(trTimer); trState = false; btn.innerText = '▶ Iniciar Ciclo de Regulación';
+    ['rojo', 'amarillo', 'verde'].forEach(id => {
+      document.getElementById('tl-' + id).style.background = '#334155';
+      document.getElementById('tl-' + id).style.boxShadow = 'none';
+    });
+    document.getElementById('tl-text').innerText = "Reposo";
+    document.getElementById('tl-text').style.color = "var(--primary)";
+    return;
+  }
+
+  trState = true; btn.innerText = '⏹ Detener Ciclo';
+  const l = ['rojo', 'amarillo', 'verde'];
+  const txt = ['INSPIRA (4s)', 'RETÉN (4s)', 'ESPIRA (4s)'];  // BUG #3 CORREGIDO: array vacío
+  const colors = ['#ef4444', '#facc15', '#22c55e'];
+  let i = 0;
+
+  const step = () => {
+    ['rojo', 'amarillo', 'verde'].forEach(id => {
+      document.getElementById('tl-' + id).style.background = '#334155';
+      document.getElementById('tl-' + id).style.boxShadow = 'none';
+    });
+    document.getElementById('tl-' + l[i]).style.background = colors[i];
+    document.getElementById('tl-' + l[i]).style.boxShadow = `0 0 40px ${colors[i]}`;
+    document.getElementById('tl-text').innerText = txt[i];
+    document.getElementById('tl-text').style.color = colors[i];
+    if (i > 0) playSynth(440 + (i * 50), 'sine', 0.1);
+    i = (i + 1) % 3;
+  };
+
+  step(); trTimer = setInterval(step, 4500);
+}
+
+// --- G5: COMPOSICIÓN ---
+let myScore = [];
+
+function initComposer() {
+  const k = document.getElementById('compKeys'); k.innerHTML = '';
+  NOTES.forEach(n => {
+    let b = document.createElement('button');
+    b.className = 'btn'; b.style.background = n.c; b.style.color = 'white';
+    b.style.width = '60px'; b.style.height = '60px'; b.style.borderRadius = '50%'; b.innerText = n.n;
+    b.onclick = () => {
+      if (myScore.length < 8) { myScore.push(n); playSynth(n.f); renderScore(); }
+      else { showToast("Límite de 8 notas alcanzado."); }
+    };
+    k.appendChild(b);
+  });
+}
+
+function renderScore() {
+  const c = document.getElementById('compScore'); c.innerHTML = '';
+  if (myScore.length === 0) { c.innerHTML = '<span style="color:var(--muted); width:100%; text-align:center;">El pentagrama está vacío...</span>'; return; }
+  myScore.forEach(n => {
+    let d = document.createElement('div');
+    d.style.cssText = 'width:45px; height:45px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-weight:bold; animation:fadeIn 0.3s ease; color:white;';
+    d.style.background = n.c; d.innerText = n.n;
+    c.appendChild(d);
+  });
+}
+
+function compPlay() {
+  if (myScore.length === 0) return;
+  let t = 0; myScore.forEach(n => { setTimeout(() => playSynth(n.f, 'square', 0.4), t * 600); t++; });
+}
+
+function compClear() { myScore = []; renderScore(); }
+
+// --- G6: ANALÍTICAS DOCENTE ---
+function renderAnalytics() {
+  const b = document.getElementById('analyticsBoard'); if (!b) return; b.innerHTML = '';
+  NOTES.forEach(n => {
+    let weight = state.cognitiveFriction[n.n] || 1;
+    let percentage = Math.min((weight / 15) * 100, 100);
+    let color = percentage > 60 ? 'var(--danger)' : (percentage > 30 ? 'var(--warning)' : 'var(--success)');
+    let msg = percentage > 60 ? 'Alta Dificultad (Aparición Frecuente)' : 'Nota Dominada (Aparición Normal)';
+
+    let wrap = document.createElement('div'); wrap.className = 'analytics-card';
+    wrap.innerHTML = `
+      <div style="display:flex; justify-content:space-between; font-weight:bold;">
+        <span style="display:flex; align-items:center; gap:8px;"><span style="width:15px; height:15px; border-radius:50%; background:${n.c}; display:inline-block;"></span> ${n.n}</span>
+        <span>Peso Relativo: x${weight}</span>
+      </div>
+      <div class="bar-wrap"><div class="bar-fill" style="width:${percentage}%; background:${color}"></div></div>
+      <p style="font-size:0.85rem; color:var(--muted); margin-top:8px;">Estado: ${msg}</p>
+    `;
+    b.appendChild(wrap);
+  });
+}
+
+function resetAnalytics() {
+  if (confirm("¿Estás seguro de que quieres borrar el mapa cognitivo de este alumno?")) {
+    NOTES.forEach(n => state.cognitiveFriction[n.n] = 1);
+    saveState(); renderAnalytics(); showToast("Algoritmo reseteado a valores de fábrica.");
+  }
+}
+
+// --- G7: EXPORTACIÓN ---
+function exportData() {
+  const notesStr = document.getElementById('teacherNotes').value;
+  const payload = { ...state, teacherNotes: notesStr, timestamp: new Date().toISOString() };
+  const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
+  const a = document.createElement('a'); a.setAttribute("href", data);
+  a.setAttribute("download", `musicPlay_v13_eval_${state.user.replace(/\s+/g, '_')}.json`);
+  document.body.appendChild(a); a.click(); a.remove();
+}
+
+window.onload = loadState;
+
+// ==========================================
+// 8. PWA: MANIFEST & SERVICE WORKER
+// ==========================================
+(function () {
+  const manifest = {
+    name: "Music Play! Suite v13.0",
+    short_name: "MusicPlay",
+    start_url: "./",
+    display: "standalone",
+    background_color: "#0f172a",
+    theme_color: "#6366f1",
+    description: "Ecosistema Neuroeducativo Musical Offline. © 50/50 Raúl Teresa Hdez & Gemini.",
+    icons: [
+      { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E🎵%3C/text%3E%3C/svg%3E", sizes: "192x192", type: "image/svg+xml" },
+      { src: "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E🎵%3C/text%3E%3C/svg%3E", sizes: "512x512", type: "image/svg+xml" }
+    ]
+  };
+
+  const manifestStr = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
+  const link = document.createElement('link');
+  link.rel = 'manifest';
+  link.href = manifestStr;
+  document.head.appendChild(link);
+
+  const swCode = `
+    const CACHE_NAME = 'music-play-pwa-v13';
+    self.addEventListener('install', event => { self.skipWaiting(); });
+    self.addEventListener('activate', event => { event.waitUntil(clients.claim()); });
+    self.addEventListener('fetch', event => {
+      if (event.request.mode === 'navigate') {
+        event.respondWith(fetch(event.request).catch(() => caches.match(event.request)));
+      }
+    });
+  `;
+
+  const swBlob = new Blob([swCode], { type: 'application/javascript' });
+  const swUrl = URL.createObjectURL(swBlob);
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register(swUrl)
+        .then(reg => console.log('✅ PWA instalable: Service Worker registrado correctamente.'))
+        .catch(err => console.warn('⚠️ SW Blob bloqueado (normal en algunos entornos). Extrae el SW a un archivo externo para GitHub Pages.', err));
+    });
+  }
+})();
+</script>
+</body>
+</html>
