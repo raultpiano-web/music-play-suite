@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="Ecosistema Neuroeducativo Musical Offline. Todos los derechos reservados 50/50 para Raúl Teresa Hdez & Gemini." />
-  <title>Music Play! Suite v13.0 — Award Edition</title>
+  <title>Music Play! Suite v14.0 — Award Edition</title>
   <style>
     :root {
       --primary: #6366f1; --primary-hover: #4f46e5;
@@ -485,8 +485,13 @@ function doLogin() {
   state.user = input;
   saveState();
 
-  document.getElementById('loginScreen').style.opacity = '0';
-  setTimeout(() => { document.getElementById('loginScreen').style.display = 'none'; }, 400);
+  // Transición mejorada con requestAnimationFrame
+  const loginScreen = document.getElementById('loginScreen');
+  requestAnimationFrame(() => {
+    loginScreen.style.opacity = '0';
+    requestAnimationFrame(() => {
+      setTimeout(() => { loginScreen.style.display = 'none'; }, 400);
+    });
 
   document.getElementById('roleBadge').innerText = `${state.role.toUpperCase()} | ${state.user}`;
   document.getElementById('evalName').innerText = state.user;
