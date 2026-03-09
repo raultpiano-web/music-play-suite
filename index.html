@@ -471,6 +471,16 @@ function selectRole(role) {
 function doLogin() {
   const input = document.getElementById('userName').value.trim();
   if (!input) { alert("Escribe tu nombre para iniciar."); return; }
+    
+  // Validación para modo docente
+  if (state.role === 'docente') {
+    const validTeacherName = 'Raúl Teresa Hdez';
+    const validTeacherEmail = 'raultpiano@gmail.com';
+    if (input !== validTeacherName && input !== validTeacherEmail) {
+      alert('Acceso docente: Usa tu nombre completo o email registrado.');
+      return;
+    }
+  }
 
   state.user = input;
   saveState();
