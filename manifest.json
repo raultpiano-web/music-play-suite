@@ -1,21 +1,34 @@
 {
-  "name": "Music Play! Suite v13.0",
-  "short_name": "MusicPlay",
+  "name": "Music Play! Suite v15.0 — Award Edition",
+  "short_name": "MusicPlay15",
+  "description": "Entorno Neuroeducativo Musical con IA Vocal y Repetición Espaciada.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#6366f1",
-  "description": "Ecosistema Neuroeducativo Musical Offline. © 50/50 Raúl Teresa Hdez & Gemini.",
+  "theme_color": "#0f172a",
+  "lang": "es-ES",
+  "dir": "ltr",
+  "orientation": "portrait-primary",
+  "prefer_related_applications": false,
   "icons": [
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E🎵%3C/text%3E%3C/svg%3E",
-      "sizes": "192x192",
-      "type": "image/svg+xml"
+      "src": "logo.svg",
+      "sizes": "192x192 512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
     },
     {
-      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='20' fill='%236366f1'/%3E%3Ctext y='.9em' font-size='80' x='10'%3E🎵%3C/text%3E%3C/svg%3E",
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/svg+xml"
+      "type": "image/png",
+      "purpose": "any"
     }
-  ]
+  ],
+  "categories": ["education", "music", "games"]
 }
