@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <meta name="theme-color" content="#0f172a" />
   <meta name="description" content="Ecosistema Neuroeducativo Musical Offline. Todos los derechos reservados 50/50 para Raúl Teresa Hdez & Gemini." />
-  <title>Music Play! Suite v15.0 — Award Edition</title>
+  <title>Music Play! Suite v15.1 — Award Edition</title>
   <style>
     :root {
       --primary: #6366f1; --primary-hover: #4f46e5;
@@ -107,7 +107,7 @@
 
 <div id="loginScreen" aria-modal="true" role="dialog">
   <div class="login-card">
-    <h2>🎵 Music Play! v15.0</h2>
+    <h2>🎵 Music Play! v15.1</h2>
     <p>Ecosistema Neuroeducativo Musical<br><small>© Todos los derechos reservados 50/50 (Raúl Teresa Hdez &amp; Gemini)</small></p>
     <div class="role-grid" id="roleSelector">
       <button class="role-btn" onclick="selectRole('docente')"><span>👩‍🏫</span>Docente</button>
@@ -437,7 +437,7 @@ function autoCorrelate(buf, sampleRate) {
 let attemptFrames = 0;
 function evaluatePitch(pitch) {
   const feedback = document.getElementById('aiFeedback');
-  if (Math.abs(pitch - currentTargetFreq) < 8) {
+  if (Math.abs(pitch - currentTargetFreq) < 15) {
     feedback.innerText = "¡AFINACIÓN PERFECTA! ✅";
     feedback.style.color = "var(--success)";
     recordSuccess(currentTargetName);
@@ -524,7 +524,7 @@ function initBingo() {
   currentTargetName = '';
 
   let pool = [];
-  while (pool.length < 8) {
+  while (pool.length < 15) {
     let n = getAlgorithmicNote();
     if (!pool.find(x => x.n === n.n)) pool.push(n);
   }
@@ -693,7 +693,7 @@ function initComposer() {
     b.className = 'btn'; b.style.background = n.c; b.style.color = 'white';
     b.style.width = '60px'; b.style.height = '60px'; b.style.borderRadius = '50%'; b.innerText = n.n;
     b.onclick = () => {
-      if (myScore.length < 8) { myScore.push(n); playSynth(n.f); renderScore(); }
+      if (myScore.length < 15) { myScore.push(n); playSynth(n.f); renderScore(); }
       else { showToast("Límite de 8 notas alcanzado."); }
     };
     k.appendChild(b);
@@ -764,7 +764,7 @@ window.onload = loadState;
 // ==========================================
 (function () {
   const manifest = {
-    name: "Music Play! Suite v15.0",
+    name: "Music Play! Suite v15.1",
     short_name: "MusicPlay",
     start_url: "./",
     display: "standalone",
