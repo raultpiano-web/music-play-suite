@@ -13,7 +13,7 @@
       --text: #0f172a; --muted: #64748b; --border: #e2e8f0;
       --success: #10b981; --danger: #ef4444; --warning: #f59e0b;
       --c-do: #ef4444; --c-re: #f97316; --c-mi: #facc15;
-      --c-fa: #22c55e; --c-sol: #3b82f6; --c-la: #8b5cf6; --c-si: #d946ef;
+      --c-fa: #22c55e; --c-sol: #0C9648; --c-la: #8b5cf6; --c-si: #d946ef;
       --shadow: 0 10px 25px -5px rgba(0,0,0,0.1);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', system-ui, sans-serif; }
@@ -753,7 +753,7 @@ function exportData() {
   const payload = { ...state, teacherNotes: notesStr, timestamp: new Date().toISOString() };
   const data = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(payload, null, 2));
   const a = document.createElement('a'); a.setAttribute("href", data);
-  a.setAttribute("download", `musicPlay_v13_eval_${state.user.replace(/\s+/g, '_')}.json`);
+  a.setAttribute("download", `musicPlay_v15_eval_${state.user.replace(/\s+/g, '_')}.json`);
   document.body.appendChild(a); a.click(); a.remove();
 }
 
@@ -780,7 +780,7 @@ window.onload = loadState;
   const manifestStr = "data:application/manifest+json;charset=utf-8," + encodeURIComponent(JSON.stringify(manifest));
   const link = document.createElement('link');
   link.rel = 'manifest';
-  link.href = manifestStr;
+  link.href = './manifest.json';
   document.head.appendChild(link);
 
   const swCode = `
@@ -799,7 +799,7 @@ window.onload = loadState;
 
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register(swUrl)
+      navigator.serviceWorker.register('./sw.js')
         .then(reg => console.log('✅ PWA instalable: Service Worker registrado correctamente.'))
         .catch(err => console.warn('⚠️ SW Blob bloqueado (normal en algunos entornos). Extrae el SW a un archivo externo para GitHub Pages.', err));
     });
