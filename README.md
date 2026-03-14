@@ -1,10 +1,10 @@
-# 🎵 Music Play! Suite v15.0 — Ecosistema Neuroeducativo Musical PWA
+# 🎵 Music Play! Suite  — Ecosistema Neuroeducativo Musical PWA
 
 [![GitHub Pages](https://img.shields.io/badge/Producci%C3%B3n-ACTIVA-brightgreen?logo=github)](https://raultpiano-web.github.io/music-play-suite/)
 [![PWA](https://img.shields.io/badge/PWA-Instalable-blueviolet?logo=googlechrome)](https://raultpiano-web.github.io/music-play-suite/)
 [![HTTPS](https://img.shields.io/badge/HTTPS-Obligatorio-blue?logo=letsencrypt)](https://raultpiano-web.github.io/music-play-suite/)
 [![Licencia](https://img.shields.io/badge/Licencia-50%2F50%20Proprietary-orange)](https://github.com/raultpiano-web/music-play-suite)
-[![Versión](https://img.shields.io/badge/Versi%C3%B3n-v15.0-informational)](https://github.com/raultpiano-web/music-play-suite/releases)
+[![Versión](https://img.shields.io/badge/Versi%C3%B3n--informational)](https://github.com/raultpiano-web/music-play-suite/releases)
 
 ---
 
@@ -26,7 +26,7 @@
 
 ## 📘 Descripción
 
-**Music Play! Suite** es una Progressive Web App (PWA) completa diseñada para el aprendizaje musical neuroeducativo offline. La versión **v15.0 Award Edition** incluye:
+**Music Play! Suite** es una Progressive Web App (PWA) completa diseñada para el aprendizaje musical neuroeducativo offline. La versión ** Award Edition** incluye:
 
 - 🧠 **Motor IA Edge** de detección de tono por autocorrelación (BUG-02 corregido)
 - 🎰 **G1 Bingo de Solfeo** con autocorrección vocal IA
@@ -44,7 +44,7 @@
 
 ```bash
 # PASO 1: Archivos PWA base — VERIFICADO
-index.html      ✔  v15.0 Award Edition (commit 5466dbb)
+index.html      ✔   Award Edition (commit 5466dbb)
 manifest.json   ✔  standalone, es-ES, iconos 192/512
 sw.js           ✔  music-play-v15-cache, rutas relativas
 README.md       ✔  Descripción completa + enlaces producción
@@ -52,7 +52,7 @@ README.md       ✔  Descripción completa + enlaces producción
 # PASO 2: Historial Git — VERIFICADO
 git init                                          ✔
 git add .                                         ✔
-git commit -m "Lanzamiento v15.0 PWA y README"    ✔
+git commit -m "Lanzamiento  PWA y README"    ✔
 git branch -M main                                ✔
 
 # PASO 3: Conexión y Push — VERIFICADO
@@ -65,10 +65,10 @@ HTTPS enforced (GitHub Pages TLS)                 ✔
 URL: https://raultpiano-web.github.io/music-play-suite/  ✔
 
 # PASO 5: Gestión de Proyectos — VERIFICADO
-Proyecto: ¡Reproduce música! Suite v15.0          ✔
+Proyecto: ¡Reproduce música! Suite           ✔
 Issue #1: Cerrado — Estado: Hecho                 ✔
-Etiquetas: produccion + v15.0                     ✔
-Hito: v15.0 — Producción HTTPS + PWA             ✔
+Etiquetas: produccion +                      ✔
+Hito:  — Producción HTTPS + PWA             ✔
 ```
 
 ---
@@ -102,7 +102,7 @@ Hito: v15.0 — Producción HTTPS + PWA             ✔
 
 ```
 music-play-suite/
-├── index.html       # App completa (SPA, 810 líneas, v15.0)
+├── index.html       # App completa (SPA, 810 líneas, )
 ├── manifest.json    # PWA Manifest (standalone, es-ES)
 ├── sw.js            # Service Worker (cache offline)
 └── README.md        # Este archivo
@@ -110,7 +110,20 @@ music-play-suite/
 
 ---
 
-## 📜 Changelog v15.0
+## 📜 Changelog 
+
+## 🔄 Changelog v15.1
+
+| BUG | Descripción | Estado |
+|-----|-------------|--------|
+| BUG-10 | CACHE_NAME corregido a 'music-play-v15-cache' | ✅ Corregido |
+| BUG-11 | Service Worker: rutas relativas verificadas | ✅ Corregido |
+
+**➡️ Cambios principales v15.0 → v15.1:**
+- 🛠️ Corrección crítica del CACHE_NAME en sw.js (de 'music-play-pwa-v15.1' a 'music-play-v15-cache')
+- ✅ Verificación completa de rutas relativas en Service Worker
+- 📌 Actualización de título de aplicación a v15.1
+- 📦 PWA instalable verificada y funcional
 
 | BUG | Descripción | Estado |
 |-----|-------------|--------|
