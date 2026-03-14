@@ -142,4 +142,140 @@ Proyecto educativo desarrollado para el Ecosistema Neuroeducativo Musical Offlin
 
 ---
 
+## 🔑 Backend API (Opcional)
+
+### Descripción
+
+El proyecto puede integrarse con un backend Node.js/Express que proporciona:
+- 🔐 **Autenticación con Firebase Admin SDK**
+- 🔒 **Proxy seguro para APIs externas**
+- 📄 **Endpoints protegidos por JWT**
+- 📈 **Sistema de analíticas**
+
+### Estructura del Backend
+
+```
+backend/
+├── server.js                 # Servidor Express principal
+├── package.json              # Dependencias del proyecto
+├── .env                      # Variables de entorno
+├── .gitignore                # Archivos ignorados
+└── firebase-service-account.json  # Credenciales Firebase (NO SUBIR A GIT)
+```
+
+### Dependencias Necesarias
+
+```bash
+npm install express firebase-admin cors dotenv
+```
+
+### Variables de Entorno (.env)
+
+```env
+PORT=3000
+NODE_ENV=development
+FRONTEND_URL=https://raultpiano-web.github.io
+EXTERNAL_API_KEY=tu_api_key_secreta
+```
+
+### Endpoints Disponibles
+
+#### Públicos
+- `GET /health` - Health check del servidor
+- `GET /api/info` - Información de la API
+
+#### Protegidos (requieren token Firebase)
+- `POST /api/proxy-datos` - Proxy seguro para llamadas externas
+- `GET /api/user/profile` - Obtener perfil del usuario
+- `POST /api/analytics/save` - Guardar analíticas
+
+### Middleware de Autenticación
+
+Todos los endpoints protegidos verifican el token JWT de Firebase:
+
+```javascript
+Authorization: Bearer <firebase-id-token>
+```
+
+### Cómo Ejecutar el Backend
+
+1. **Instalar dependencias:**
+```bash
+cd backend
+npm install
+```
+
+2. **Configurar Firebase:**
+   - Descargar `firebase-service-account.json` desde Firebase Console
+   - Colocar en directorio `backend/`
+   - **IMPORTANTE:** Añadir a `.gitignore`
+
+3. **Ejecutar en desarrollo:**
+```bash
+node server.js
+```
+
+4. **Ejecutar en producción (GCP/Cloud Run):**
+```bash
+NODE_ENV=production node server.js
+```
+
+### Integración con Frontend
+
+Desde el frontend, hacer llamadas autenticadas:
+
+```javascript
+// Obtener token del usuario autenticado
+const user = firebase.auth().currentUser;
+const idToken = await user.getIdToken();
+
+// Hacer llamada al backend
+const response = await fetch('https://tu-backend.com/api/proxy-datos', {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer ${idToken}`
+  },
+  body: JSON.stringify({
+    endpoint: 'https://api-externa.com/datos',
+    method: 'GET'
+  })
+});
+
+const data = await response.json();
+```
+
+### Despliegue en Producción
+
+**Opciones recomendadas:**
+- 🚀 **Google Cloud Run** (recomendado para Firebase)
+- 🌎 **Heroku**
+- 🟢 **Vercel Serverless Functions**
+- ☁️ **AWS Lambda + API Gateway**
+
+### Seguridad
+
+✅ **Implementado:**
+- Verificación de tokens Firebase
+- CORS configurado
+- API keys en variables de entorno
+- Logs de auditoría
+
+⚠️ **Importante:**
+- **NUNCA** subir `firebase-service-account.json` a GitHub
+- **NUNCA** exponer API keys en el frontend
+- Usar HTTPS en producción
+- Implementar rate limiting si es necesario
+
+### Código Fuente Completo
+
+El código completo del servidor backend está disponible en:
+- 📁 `backend/server.js` (252 líneas)
+- 📝 Documentación inline completa
+- ✅ Listo para desplegar
+
+
+
+---
+
 *Última actualización: 14/03/2026 — Commit activo: `5466dbb`*
