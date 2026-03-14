@@ -784,8 +784,7 @@ window.onload = loadState;
   document.head.appendChild(link);
 
   const swCode = `
-    const CACHE_NAME = 'music-play-pwa-v15.1';
-    self.addEventListener('install', event => { self.skipWaiting(); });
+  const CACHE_NAME = 'music-play-v15-cache';    self.addEventListener('install', event => { self.skipWaiting(); });
     self.addEventListener('activate', event => { event.waitUntil(clients.claim()); });
     self.addEventListener('fetch', event => {
       if (event.request.mode === 'navigate') {
