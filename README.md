@@ -1,261 +1,132 @@
 # 🎵 Music Play! Suite v15.0 — Ecosistema Neuroeducativo Musical PWA
 
-## 📋 Descripción
-
-Music Play! Suite es una Progressive Web App (PWA) completa diseñada para el aprendizaje musical neuroeducativo. La versión 15.0 introduce una arquitectura modular optimizada, nuevo sistema de iconografía SVG, y mejoras significativas en rendimiento y accesibilidad.
-
-## ✨ Novedades v15.0
-
-### 🎨 Nuevo Sistema de Iconografía
-- **Iconos SVG optimizados** para todos los tamaños (192x192, 512x512)
-- **Diseño circular moderno** con degradado musical
-- **Elementos visuales**: notas musicales, ondas sonoras, cerebro estilizado
-- **Colores principales**: #4A90E2 (azul) y #50C878 (verde)
-- **Optimización**: Archivos SVG ligeros y escalables
-
-### 🏗️ Arquitectura PWA Mejorada
-- **Service Worker actualizado** con caché inteligente
-- **Manifest.json optimizado** para instalación fluida
-- **Estrategia de caché**: Network First con fallback
-- **Soporte offline completo**
-- **Actualización automática** de recursos
-
-### 🎯 Mejoras de Rendimiento
-- **Carga inicial optimizada**: < 2 segundos
-- **Lazy loading** de recursos pesados
-- **Compresión de assets**
-- **Caché estratégica** de archivos críticos
-
-### ♿ Accesibilidad WCAG 2.1 AA
-- **Navegación por teclado** completa
-- **Roles ARIA** implementados
-- **Contraste de colores** optimizado
-- **Lectores de pantalla** compatibles
-- **Focus visible** en todos los elementos interactivos
-
-### 📱 Responsive Design
-- **Mobile-first** approach
-- **Breakpoints optimizados**: 480px, 768px, 1024px
-- **Touch-friendly** interfaces
-- **Orientación adaptativa**
-
-## 🚀 Instalación
-
-### Como PWA (Recomendado)
-1. Visita https://raultpiano-web.github.io/music-play-suite/
-2. Acepta la instalación cuando aparezca el prompt
-3. La app se instalará en tu dispositivo
-4. Accede desde el escritorio o menú de aplicaciones
-
-### Desarrollo Local
-```bash
-git clone https://github.com/raultpiano-web/music-play-suite.git
-cd music-play-suite
-# Servir con cualquier servidor HTTP
-python -m http.server 8000
-# O usar Live Server en VS Code
-```
-
-## 📁 Estructura del Proyecto
-
-```
-music-play-suite/
-├── index.html          # Aplicación principal
-├── manifest.json       # Configuración PWA
-├── sw.js              # Service Worker
-├── icon-192.svg       # Icono 192x192 (generado)
-├── icon-512.svg       # Icono 512x512 (generado)
-└── README.md          # Documentación
-```
-
-## 🎮 Funcionalidades Principales
-
-### 1️⃣ Reproductor Musical Avanzado
-- Control de reproducción (play/pause/stop)
-- Barra de progreso interactiva
-- Control de volumen con visualización
-- Información de pista en tiempo real
-
-### 2️⃣ Gestor de Playlist
-- Biblioteca de canciones integrada
-- Búsqueda y filtrado
-- Modo aleatorio (shuffle)
-- Repetición de pistas
-
-### 3️⃣ Visualizador de Frecuencias
-- Análisis espectral en tiempo real
-- Visualización tipo barras
-- Respuesta a audio
-
-### 4️⃣ Juegos Educativos
-- **Simón Musical**: Memoria auditiva y visual
-- **Adivina la Nota**: Entrenamiento del oído
-- **Ritmo Rápido**: Coordinación rítmica
-- Sistema de puntuación y niveles
-
-### 5️⃣ Sistema de Logros
-- Seguimiento de progreso
-- Badges desbloqueables
-- Estadísticas de uso
-
-## 🛠️ Tecnologías Utilizadas
-
-- **HTML5**: Estructura semántica
-- **CSS3**: Diseño responsivo y animaciones
-- **JavaScript (Vanilla)**: Lógica de aplicación
-- **Web Audio API**: Procesamiento de audio
-- **Service Workers**: Funcionalidad offline
-- **SVG**: Iconografía escalable
-- **LocalStorage**: Persistencia de datos
-
-## 🎨 Iconos SVG
-
-### icon-192.svg
-Icono optimizado para dispositivos móviles y notificaciones.
-- Dimensiones: 192x192px
-- Elementos: Nota musical, onda sonora, cerebro
-- Degradado: #4A90E2 → #50C878
-
-### icon-512.svg
-Icono de alta resolución para pantallas de escritorio y splash screens.
-- Dimensiones: 512x512px
-- Mayor detalle visual
-- Optimización para retina displays
-
-## 🔧 Configuración del Manifest
-
-```json
-{
-  "name": "Music Play! Suite",
-  "short_name": "Music Play!",
-  "description": "Ecosistema Neuroeducativo Musical PWA",
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#1a1a2e",
-  "theme_color": "#4A90E2",
-  "orientation": "any"
-}
-```
-
-## 📊 Service Worker - Estrategia de Caché
-
-### Network First
-- Prioriza contenido fresco de red
-- Fallback a caché si offline
-- Actualización automática de recursos
-
-### Archivos en Caché
-- index.html
-- manifest.json
-- icon-192.svg
-- icon-512.svg
-- Recursos adicionales bajo demanda
-
-## 🎓 Uso Educativo
-
-Music Play! Suite está diseñada para:
-- **Educación musical** en aulas
-- **Aprendizaje autónomo** de estudiantes
-- **Entrenamiento auditivo** profesional
-- **Terapia musical** neuroeducativa
-- **Gamificación** del aprendizaje musical
-
-## ♿ Accesibilidad
-
-Cumplimiento WCAG 2.1 AA:
-- ✅ Contraste mínimo 4.5:1
-- ✅ Navegación completa por teclado
-- ✅ Roles ARIA apropiados
-- ✅ Textos alternativos
-- ✅ Focus indicators visibles
-- ✅ Semántica HTML5
-
-## 🌐 Compatibilidad
-
-### Navegadores Soportados
-- ✅ Chrome/Edge 90+
-- ✅ Firefox 88+
-- ✅ Safari 14+
-- ✅ Opera 76+
-
-### Dispositivos
-- ✅ Android 8.0+
-- ✅ iOS 13+
-- ✅ Windows 10+
-- ✅ macOS 10.15+
-- ✅ Linux (principales distribuciones)
-
-## 📈 Rendimiento
-
-### Métricas Core Web Vitals
-- **LCP** (Largest Contentful Paint): < 2.5s
-- **FID** (First Input Delay): < 100ms
-- **CLS** (Cumulative Layout Shift): < 0.1
-
-### Lighthouse Score
-- 🟢 Performance: 95+
-- 🟢 Accessibility: 100
-- 🟢 Best Practices: 100
-- 🟢 SEO: 100
-- 🟢 PWA: 100
-
-## 🔐 Privacidad y Datos
-
-- **Sin tracking**: No se recopilan datos personales
-- **Almacenamiento local**: Todos los datos permanecen en el dispositivo
-- **Sin cookies**: No se utilizan cookies de terceros
-- **Código abierto**: Transparencia total
-
-## 🗺️ Roadmap
-
-### v15.1 (Próxima)
-- [ ] Modo oscuro/claro conmutable
-- [ ] Exportación de estadísticas
-- [ ] Nuevos juegos educativos
-- [ ] Integración con MIDI devices
-
-### v16.0 (Futuro)
-- [ ] Backend opcional con sincronización
-- [ ] Colaboración multi-usuario
-- [ ] Cursos estructurados
-- [ ] Sistema de certificaciones
-
-## 🤝 Contribuciones
-
-Las contribuciones son bienvenidas:
-
-1. Fork el repositorio
-2. Crea una rama feature (`git checkout -b feature/NuevaFuncionalidad`)
-3. Commit tus cambios (`git commit -m 'Añade nueva funcionalidad'`)
-4. Push a la rama (`git push origin feature/NuevaFuncionalidad`)
-5. Abre un Pull Request
-
-## 📄 Licencia
-
-Este proyecto es de código abierto y está disponible bajo la licencia MIT.
-
-## 👤 Autor
-
-**Raúl T. Piano**
-- GitHub: [@raultpiano-web](https://github.com/raultpiano-web)
-- Proyecto: Music Play! Suite
-
-## 🙏 Agradecimientos
-
-- Comunidad de educación musical neuroeducativa
-- Contribuidores de código abierto
-- Usuarios y testers beta
-
-## 📞 Soporte
-
-Para reportar bugs o solicitar funcionalidades:
-- **Issues**: https://github.com/raultpiano-web/music-play-suite/issues
-- **Discussions**: Utiliza la pestaña de Discusiones en GitHub
+[![GitHub Pages](https://img.shields.io/badge/Producci%C3%B3n-ACTIVA-brightgreen?logo=github)](https://raultpiano-web.github.io/music-play-suite/)
+[![PWA](https://img.shields.io/badge/PWA-Instalable-blueviolet?logo=googlechrome)](https://raultpiano-web.github.io/music-play-suite/)
+[![HTTPS](https://img.shields.io/badge/HTTPS-Obligatorio-blue?logo=letsencrypt)](https://raultpiano-web.github.io/music-play-suite/)
+[![Licencia](https://img.shields.io/badge/Licencia-50%2F50%20Proprietary-orange)](https://github.com/raultpiano-web/music-play-suite)
+[![Versión](https://img.shields.io/badge/Versi%C3%B3n-v15.0-informational)](https://github.com/raultpiano-web/music-play-suite/releases)
 
 ---
 
-**Version**: 15.0  
-**Última actualización**: 2025  
-**Estado**: ✅ Producción
+## 🚀 Acceso Directo a Producción
 
-🎵 **Music Play! Suite** - Donde la neurociencia se encuentra con la música
+> **🔗 URL única de acceso seguro:**
+> ## [https://raultpiano-web.github.io/music-play-suite/](https://raultpiano-web.github.io/music-play-suite/)
+
+| Recurso | URL |
+|---------|-----|
+| 🚀 App Producción (HTTPS) | https://raultpiano-web.github.io/music-play-suite/ |
+| 💻 Repositorio GitHub | https://github.com/raultpiano-web/music-play-suite |
+| 📋 Proyecto / Tablero | https://github.com/users/raultpiano-web/projects/1 |
+| ⚙️ Service Worker | https://raultpiano-web.github.io/music-play-suite/sw.js |
+| 📱 Manifest PWA | https://raultpiano-web.github.io/music-play-suite/manifest.json |
+| 🐛 Issue #1 (despliegue) | https://github.com/raultpiano-web/music-play-suite/issues/1 |
+
+---
+
+## 📘 Descripción
+
+**Music Play! Suite** es una Progressive Web App (PWA) completa diseñada para el aprendizaje musical neuroeducativo offline. La versión **v15.0 Award Edition** incluye:
+
+- 🧠 **Motor IA Edge** de detección de tono por autocorrelación (BUG-02 corregido)
+- 🎰 **G1 Bingo de Solfeo** con autocorrección vocal IA
+- ✨ **G2 Afinador de Estrellas** con secuencias melódicas
+- 🎯 **G3 Cuatro Esquinas** con práctica intercalada de timbres
+- 🚦 **G4 Semáforo SEL** (regulación emocional somatic)
+- 🎼 **G5 Síntesis Creativa** con escala pentatónica
+- 🧠 **G6 Analíticas Predictivas** con Spaced Repetition System (SRS)
+- 📋 **G7 Rúbrica LOMLOE** con exportación PDF/JSON
+- 📴 **Funcionamiento 100% offline** tras primera visita
+
+---
+
+## ✅ Pipeline CI/CD — Estado de Despliegue
+
+```bash
+# PASO 1: Archivos PWA base — VERIFICADO
+index.html      ✔  v15.0 Award Edition (commit 5466dbb)
+manifest.json   ✔  standalone, es-ES, iconos 192/512
+sw.js           ✔  music-play-v15-cache, rutas relativas
+README.md       ✔  Descripción completa + enlaces producción
+
+# PASO 2: Historial Git — VERIFICADO
+git init                                          ✔
+git add .                                         ✔
+git commit -m "Lanzamiento v15.0 PWA y README"    ✔
+git branch -M main                                ✔
+
+# PASO 3: Conexión y Push — VERIFICADO
+git remote add origin https://github.com/raultpiano-web/music-play-suite.git  ✔
+git push -u origin main                           ✔
+
+# PASO 4: HTTPS Pages — VERIFICADO
+Settings > Pages > Deploy from branch: main       ✔
+HTTPS enforced (GitHub Pages TLS)                 ✔
+URL: https://raultpiano-web.github.io/music-play-suite/  ✔
+
+# PASO 5: Gestión de Proyectos — VERIFICADO
+Proyecto: ¡Reproduce música! Suite v15.0          ✔
+Issue #1: Cerrado — Estado: Hecho                 ✔
+Etiquetas: produccion + v15.0                     ✔
+Hito: v15.0 — Producción HTTPS + PWA             ✔
+```
+
+---
+
+## 🛡️ Verificaciones de Seguridad PWA
+
+| Criterio | Estado | Detalle |
+|----------|--------|---------|
+| HTTPS | ✅ PASS | GitHub Pages TLS obligatorio |
+| manifest.json | ✅ PASS | `standalone`, `es-ES`, iconos SVG+PNG |
+| Service Worker | ✅ PASS | Cache `music-play-v15-cache`, offline |
+| Instalable | ✅ PASS | Chrome/Edge: instalar desde barra |
+| lang="es" | ✅ PASS | `<html lang="es">` |
+| meta theme-color | ✅ PASS | `#0f172a` |
+| BUG-09 Sol | ✅ FIX | `--c-sol: #0C9648` |
+| BUG-03 SW rutas | ✅ FIX | `./sw.js`, `./manifest.json`, `v15_eval` |
+
+---
+
+## 🎓 Cómo Acceder al Ecosistema
+
+1. Abre **https://raultpiano-web.github.io/music-play-suite/**
+2. Elige rol: **Docente** 👩‍🏫 o **Alumno** 🎓
+3. Escribe tu nombre o identificador
+4. Pulsa **“Acceder al Ecosistema”**
+5. *(Opcional)* En Chrome/Edge: instala como PWA desde el icono de la barra de direcciones
+
+---
+
+## 📁 Estructura del Repositorio
+
+```
+music-play-suite/
+├── index.html       # App completa (SPA, 810 líneas, v15.0)
+├── manifest.json    # PWA Manifest (standalone, es-ES)
+├── sw.js            # Service Worker (cache offline)
+└── README.md        # Este archivo
+```
+
+---
+
+## 📜 Changelog v15.0
+
+| BUG | Descripción | Estado |
+|-----|-------------|--------|
+| BUG-01 | Matriz de notas completa (7 notas) | ✅ Corregido |
+| BUG-02 | autoCorrelate: buf[SIZE-i] correcto | ✅ Corregido |
+| BUG-03 | SW rutas relativas + cache v15_eval | ✅ Corregido |
+| BUG-09 | Color Sol --c-sol: #0C9648 | ✅ Corregido |
+
+---
+
+## ©️ Licencia
+
+**© 50/50 Raúl Teresa Hdez & Gemini** — Todos los derechos reservados.
+
+Proyecto educativo desarrollado para el Ecosistema Neuroeducativo Musical Offline con IA Vocal y Repetición Espaciada (SRS). Marco pedagógico LOMLOE.
+
+---
+
+*Última actualización: 14/03/2026 — Commit activo: `5466dbb`*
