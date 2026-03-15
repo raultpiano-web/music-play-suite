@@ -1,15 +1,16 @@
 {
-  "name": "Music Play! Suite v15.0 — Award Edition",
-  "short_name": "MusicPlay15",
-  "description": "Entorno Neuroeducativo Musical con IA Vocal y Repetición Espaciada.",
+  "name": "Music Play! Suite v16.0 — Despliegue Máximo 100%",
+  "short_name": "MusicPlay16",
+  "description": "Ecosistema Neuroeducativo Musical PWA - Fase 5: Consolidación Nacional. Expansión 50 Centros CyL. Coste 0€/año. Auditoría 42/42.",
   "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#0f172a",
-  "theme_color": "#0f172a",
+  "theme_color": "#10b981",
   "lang": "es-ES",
   "dir": "ltr",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
+  "scope": "/music-play-suite/",
   "icons": [
     {
       "src": "logo.svg",
@@ -30,5 +31,43 @@
       "purpose": "any"
     }
   ],
-  "categories": ["education", "music", "games"]
+  "categories": ["education", "music", "games", "productivity"],
+  "screenshots": [
+    {
+      "src": "screenshot-desktop.png",
+      "sizes": "1920x1080",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Vista principal - Motor DSP y Fricción Cognitiva"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "750x1334",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Vista móvil - Checklist Maestro"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "Motor DSP",
+      "short_name": "DSP",
+      "description": "Simulación Edge AI de Autocorrelación",
+      "url": "./index.html#motores",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    },
+    {
+      "name": "Checklist Cierre",
+      "short_name": "Cierre",
+      "description": "Wizard de Certificación v16.0",
+      "url": "./index.html#despliegue",
+      "icons": [{ "src": "icon-192.png", "sizes": "192x192" }]
+    }
+  ],
+  "serviceworker": {
+    "src": "./sw.js",
+    "scope": "/music-play-suite/"
+  },
+  "related_applications": [],
+  "iarc_rating_id": "e84b072d-71b3-4d3e-86ae-31a8ce4e53b7"
 }
